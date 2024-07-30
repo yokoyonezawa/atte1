@@ -1,0 +1,53 @@
+.date-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    margin-bottom: 180px;
+    background-color: #E3E3E3;
+    }
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.page-item {
+    font-size: 20px;
+    background-color: white;
+    padding: 5px;
+}
+
+.page-link {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.page-item.active .page-link {
+    background-color: #007bff;
+    color: white;
+}
+
+.page-item.disabled .page-link {
+    color: #6c757d;
+}
+
+.date__content {
+    border-top: solid 2px #ABABAB;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+table tr td {
+    border-top: 2px solid #ABABAB;
+    padding: 30px 80px;
+}
+
+table th,
+table td {
+    padding: 30px 80px;
+}

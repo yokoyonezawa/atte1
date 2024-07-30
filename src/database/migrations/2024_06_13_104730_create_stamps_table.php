@@ -18,8 +18,6 @@ class CreateStampsTable extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamp('start_time')->nullable();
             $table->timestamp('end_time')->nullable();
-            $table->timestamp('break_start_time')->nullable();
-            $table->timestamp('break_end_time')->nullable();
             $table->timestamps();
         });
     }
