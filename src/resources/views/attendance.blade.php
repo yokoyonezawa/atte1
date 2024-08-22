@@ -27,17 +27,11 @@
                 <tr>
                     <td>{{ $stamp->user->name }}</td>
                     <td>{{ $stamp->start_time }}</td>
-                    <!-- <td>@if ($stamp->end_time)
-                        {{ $stamp->end_time }}
-                        @else
-                        -
-                        @endif</td> -->
                     <td>
                     @if (is_null($stamp->end_time))
                     -
                     @else
                     {{ $stamp->end_time }}
-                    <!-- やばい -->
                     @endif
                     </td>
                     <td>{{ gmdate('H:i:s', $stamp->breaks->sum(function ($break) {
