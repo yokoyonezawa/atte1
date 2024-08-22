@@ -13,6 +13,10 @@ body {
     padding: 20px;
     margin-bottom: 180px;
 }
+.login__content-ttl {
+    font-size: 25px;
+    font-weight: bold;
+}
 
 
 .login-form {

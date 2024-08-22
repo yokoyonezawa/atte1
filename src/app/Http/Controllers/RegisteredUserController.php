@@ -12,10 +12,25 @@ use Illuminate\Support\Facades\Log;
 
 class RegisteredUserController extends Controller
 {
+
+    public function store(Request $request){
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+        ]);
+
+        Auth::login($user);
+
+        return redirect('stamp');
+    }
+
     public function index(){
         $user = Auth::user();
         return view('stamp', compact('user'));
     }
+
+
 
     public function start(Request $request)
     {
@@ -35,6 +50,7 @@ class RegisteredUserController extends Controller
 
         return redirect('/stamp');
     }
+
 
     public function startBreak(Request $request)
     {
@@ -61,20 +77,23 @@ class RegisteredUserController extends Controller
     }
 
     public function attendance(Request $request)
-    {
-    $date = $request->input('date', Carbon::today()->toDateString());
+{
+    $date = Carbon::parse($request->input('date', Carbon::today()->toDateString()));
 
-    $previousDate = Carbon::parse($date)->subDay()->toDateString();
-    $nextDate = Carbon::parse($date)->addDay()->toDateString();
+    $previousDate = $date->copy()->subDay()->toDateString();
+    $nextDate = $date->copy()->addDay()->toDateString();
 
     $stamps = Stamp::with(['user', 'breaks'])
-        ->whereDate('start_time', $date)
-        ->orWhereDate('end_time', $date)
+        ->where(function ($query) use ($date) {
+            $query->whereDate('start_time', $date)
+            ->orWhere(function ($query) use ($date) {
+                $query->whereDate('end_time', $date);
+            });
+        })
         ->paginate(5);
 
     return view('attendance', compact('stamps', 'date', 'previousDate', 'nextDate'));
-    }
-
+}
 
     public function logout(Request $request)
     {
@@ -84,5 +103,4 @@ class RegisteredUserController extends Controller
 
         return redirect('/login');
     }
-
 }

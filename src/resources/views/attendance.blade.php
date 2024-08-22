@@ -9,7 +9,7 @@
 <header class="date-header">
     <h2>
         <a href="{{ url('/attendance?date=' . $previousDate) }}">＜</a>
-        {{ $date }}
+        {{ $date->format('Y-m-d') }}
         <a href="{{ url('/attendance?date=' . $nextDate) }}">＞</a>
     </h2>
 </header>
@@ -27,7 +27,19 @@
                 <tr>
                     <td>{{ $stamp->user->name }}</td>
                     <td>{{ $stamp->start_time }}</td>
-                    <td>{{ $stamp->end_time }}</td>
+                    <!-- <td>@if ($stamp->end_time)
+                        {{ $stamp->end_time }}
+                        @else
+                        -
+                        @endif</td> -->
+                    <td>
+                    @if (is_null($stamp->end_time))
+                    -
+                    @else
+                    {{ $stamp->end_time }}
+                    <!-- やばい -->
+                    @endif
+                    </td>
                     <td>{{ gmdate('H:i:s', $stamp->breaks->sum(function ($break) {
                         $start = \Carbon\Carbon::parse($break->start_time);
                         $end = \Carbon\Carbon::parse($break->end_time);

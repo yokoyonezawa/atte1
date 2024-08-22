@@ -39,34 +39,39 @@ class Stamp extends Model
         $start = Carbon::parse($this->start_time);
         $end = Carbon::parse($this->end_time);
 
-        // 終了時間が開始時間よりも前の場合、翌日として扱う
         if ($end->lt($start)) {
             $end->addDay();
         }
 
-        // 休憩時間を計算
+
         $breaks = $this->breaks->sum(function ($break) {
             $breakStart = Carbon::parse($break->start_time);
             $breakEnd = Carbon::parse($break->end_time);
 
-            // 休憩終了時間が開始時間よりも前の場合、翌日として扱う
+
             if ($breakEnd->lt($breakStart)) {
                 $breakEnd->addDay();
             }
             return $breakStart->diffInSeconds($breakEnd);
         });
 
-        // 勤務時間を秒単位で計算
+
         $totalSeconds = $end->diffInSeconds($start) - $breaks;
 
-        // 秒単位の勤務時間を時分秒に変換
         $hours = floor($totalSeconds / 3600);
         $minutes = floor(($totalSeconds % 3600) / 60);
         $seconds = $totalSeconds % 60;
 
-        // フォーマットして返す
         return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
     }
+    // public function calculateWorkHours()
+    // {
+    //     $startTime = Carbon::parse($this->start_time);
+    //     $endTime = $this->end_time ? Carbon::parse($this->end_time) : Carbon::now();
+    //     $workDuration = $startTime->diffInSeconds($endTime);
+
+    //     return gmdate('H:i:s', $workDuration);
+    // }
 
     public function user()
     {
